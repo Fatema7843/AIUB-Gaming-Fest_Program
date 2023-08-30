@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DeshiGamingfestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="admin">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="event_managers" Relationship="Self.FK_event_managers_admins" FromRole="admins" ToRole="event_managers" />
+    <NavigationProperty Name="general_users" Relationship="Self.FK_general_users_admins" FromRole="admins" ToRole="general_users" />
+    <NavigationProperty Name="volunteers" Relationship="Self.FK_volunteers_admins" FromRole="admins" ToRole="volunteers" />
+  </EntityType>
+  <EntityType Name="event_creations">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="admin_id" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="event_duties">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="volunteer_id" Type="Int32" Nullable="false" />
+    <Property Name="user_id" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="event_managers">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="admin_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="admin" Relationship="Self.FK_event_managers_admins" FromRole="event_managers" ToRole="admins" />
+    <NavigationProperty Name="volunteers" Relationship="Self.FK_volunteers_event_managers" FromRole="event_managers" ToRole="volunteers" />
+  </EntityType>
+  <EntityType Name="event_regis">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="event_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="payment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="user_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="general_users" Relationship="Self.FK_event_regis_general_users" FromRole="event_regis" ToRole="general_users" />
+  </EntityType>
+  <EntityType Name="general_users">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="dob" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="admin_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="admin" Relationship="Self.FK_general_users_admins" FromRole="general_users" ToRole="admins" />
+    <NavigationProperty Name="event_regis" Relationship="Self.FK_event_regis_general_users" FromRole="general_users" ToRole="event_regis" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="volunteer">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="manager_id" Type="Int32" Nullable="false" />
+    <Property Name="admin_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="admin" Relationship="Self.FK_volunteers_admins" FromRole="volunteers" ToRole="admins" />
+    <NavigationProperty Name="event_managers" Relationship="Self.FK_volunteers_event_managers" FromRole="volunteers" ToRole="event_managers" />
+  </EntityType>
+  <Association Name="FK_event_managers_admins">
+    <End Role="admins" Type="Self.admin" Multiplicity="1" />
+    <End Role="event_managers" Type="Self.event_managers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="admins">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="event_managers">
+        <PropertyRef Name="admin_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_general_users_admins">
+    <End Role="admins" Type="Self.admin" Multiplicity="1" />
+    <End Role="general_users" Type="Self.general_users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="admins">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="general_users">
+        <PropertyRef Name="admin_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_volunteers_admins">
+    <End Role="admins" Type="Self.admin" Multiplicity="1" />
+    <End Role="volunteers" Type="Self.volunteer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="admins">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="volunteers">
+        <PropertyRef Name="admin_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_volunteers_event_managers">
+    <End Role="event_managers" Type="Self.event_managers" Multiplicity="1" />
+    <End Role="volunteers" Type="Self.volunteer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="event_managers">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="volunteers">
+        <PropertyRef Name="manager_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_event_regis_general_users">
+    <End Role="general_users" Type="Self.general_users" Multiplicity="1" />
+    <End Role="event_regis" Type="Self.event_regis" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="general_users">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="event_regis">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DeshiGamingfestEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="admins" EntityType="Self.admin" />
+    <EntitySet Name="event_creations" EntityType="Self.event_creations" />
+    <EntitySet Name="event_duties" EntityType="Self.event_duties" />
+    <EntitySet Name="event_managers" EntityType="Self.event_managers" />
+    <EntitySet Name="event_regis" EntityType="Self.event_regis" />
+    <EntitySet Name="general_users" EntityType="Self.general_users" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="volunteers" EntityType="Self.volunteer" />
+    <AssociationSet Name="FK_event_managers_admins" Association="Self.FK_event_managers_admins">
+      <End Role="admins" EntitySet="admins" />
+      <End Role="event_managers" EntitySet="event_managers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_general_users_admins" Association="Self.FK_general_users_admins">
+      <End Role="admins" EntitySet="admins" />
+      <End Role="general_users" EntitySet="general_users" />
+    </AssociationSet>
+    <AssociationSet Name="FK_volunteers_admins" Association="Self.FK_volunteers_admins">
+      <End Role="admins" EntitySet="admins" />
+      <End Role="volunteers" EntitySet="volunteers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_volunteers_event_managers" Association="Self.FK_volunteers_event_managers">
+      <End Role="event_managers" EntitySet="event_managers" />
+      <End Role="volunteers" EntitySet="volunteers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_event_regis_general_users" Association="Self.FK_event_regis_general_users">
+      <End Role="general_users" EntitySet="general_users" />
+      <End Role="event_regis" EntitySet="event_regis" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
